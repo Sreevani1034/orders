@@ -1,11 +1,12 @@
-const { order } = require("../../models");
+const { order } = require("../../models"); 
 
-const getOrderDetailsService = async (order_id) => {
-  const result = await order.findOne({
-    where: { order_id },
-  });
-
-  return result;
+const getAllOrdersService = async () => {
+  try {
+    const orders = await order.findAll();
+    return orders;
+  } catch (error) {
+    throw new Error("Error fetching orders: " + error.message);
+  }
 };
 
-module.exports = { getOrderDetailsService };
+module.exports = { getAllOrdersService };

@@ -1,19 +1,19 @@
-const { getOrderDetailsService } = require("../services/orderServices");
+const { getAllOrdersService } = require("../services/orderServices");
 
-const getOrderDetailsController = async (req, res) => {
+const getAllOrdersController = async (req, res) => {
   try {
-    const { order_id } = req.params;
-
-    const orderData = await getOrderDetailsService(order_id.trim());
-
-    if (!orderData) {
-      return res.status(404).json({ message: "order not found" });
-    }
-
-    return res.status(200).json(orderData);
+    const orders = await getAllOrdersService();
+    res.status(200).json({
+      success: true,
+      data: orders,
+    });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: error.message || "Failed to fetch orders",
+    });
   }
 };
 
-module.exports = { getOrderDetailsController };
+module.exports = { getAllOrdersController };
